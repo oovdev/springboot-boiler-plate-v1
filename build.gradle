@@ -90,5 +90,5 @@ liquibase {
 
 
 bootJar {
-	archiveFileName = "${archiveBaseName}.jar"
+	archiveFileName = "springboot-boilerplate-v1.jar"
 }
