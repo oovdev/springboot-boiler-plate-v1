@@ -1,0 +1,94 @@
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '3.3.7'
+	id 'io.spring.dependency-management' version '1.1.7'
+	id 'org.liquibase.gradle' version '2.2.0'
+}
+
+group = 'dev.saseum'
+version = '0.0.1-SNAPSHOT'
+
+java {
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(17)
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+ext {
+	set('lombok.version', '1.18.28')
+	set('commonsLogging.version', '1.2')
+	set('slf4j.version', '2.0.7')
+	set('beanutils.version', '1.9.4')
+	set('jjwtVersion', '0.11.5')
+	set('commonsValidatorVersion', '1.7')
+	set('passay.version', '1.6.2')
+	set('swagger.version', '2.0.2')
+	set('liquibase.version', '4.23.0')
+	set('liquibaseHibernate.version', '4.22.0')
+	set('junitJupiter.version', '5.10.0')
+	set('instancioVersion', '2.13.0')
+	set('checkstyleVersion', '9.0')
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-actuator'
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+	runtimeOnly 'org.springframework.boot:spring-boot-docker-compose'
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	runtimeOnly 'org.postgresql:postgresql'
+	implementation "org.liquibase:liquibase-core:4.23.0"
+	testImplementation "org.liquibase.ext:liquibase-hibernate6:4.22.0"
+	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+	annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+	implementation 'org.springframework.boot:spring-boot-starter-mail'
+	implementation 'org.springframework.boot:spring-boot-starter-websocket'
+	implementation "io.jsonwebtoken:jjwt-api:0.11.5"
+	implementation "io.jsonwebtoken:jjwt-impl:0.11.5"
+	implementation "io.jsonwebtoken:jjwt-jackson:0.11.5"
+	compileOnly "org.projectlombok:lombok"
+	annotationProcessor "org.projectlombok:lombok"
+	testCompileOnly "org.projectlombok:lombok"
+	testAnnotationProcessor "org.projectlombok:lombok"
+	compileOnly 'commons-logging:commons-logging'
+	implementation "org.slf4j:jcl-over-slf4j"
+	implementation "commons-beanutils:commons-beanutils:1.9.4"
+	implementation "org.passay:passay:1.6.2"
+	implementation "org.springdoc:springdoc-openapi-starter-webmvc-api:2.0.2"
+	implementation "org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2"
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation "org.junit.jupiter:junit-jupiter-engine:5.9.3"
+	testImplementation "org.junit.jupiter:junit-jupiter-params:5.9.3"
+	testImplementation 'junit:junit'
+	testImplementation "org.instancio:instancio-junit:2.13.0"
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
+
+
+liquibase {
+	activities {
+		main {
+			changeLogFile 'src/main/resources/db/changelog/master.xml'
+			url 'jdbc:postgresql://localhost:5432/url_shortener'
+			username 'postgres'
+			password 'secret'
+			referenceUrl "hibernate:spring:dev.saseum.javaspringbootboilerplate?dialect=org.hibernate.dialect.PostgreSQLDialect&hibernate.implicit_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy"
+		}
+	}
+	runList = 'main'
+}
+
+
+bootJar {
+	archiveFileName = "${archiveBaseName}.jar"
+}
