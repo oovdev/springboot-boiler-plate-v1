@@ -29,20 +29,15 @@ docker-compose up --build -d
 
 ### Install dependencies
 ```bash
-
+./gradlew clean build
 ```
 
 ### Run project
 ```bash
-
+./gradlew bootRun
 ```
 
 ### Build project
 ```bash
-
-```
-
-### Skip integration tests
-```bash
-
+./gradlew clean assemble
 ```
